@@ -22,7 +22,7 @@ This action can be used to perform automatic code-reviews or write reviewer guid
 
 ```yaml
 - name: AI Code Review
-  uses: elementsinteractive/lgtm-ai@v1
+  uses: elementsinteractive/lgtm-ai-action@v1
   with:
     ai-api-key: ${{ secrets.AI_API_KEY }}
     git-api-key: ${{ secrets.GITHUB_TOKEN }}
@@ -31,6 +31,8 @@ This action can be used to perform automatic code-reviews or write reviewer guid
 ```
 
 ### Full Workflow Example
+
+This simple workflow will perform a review whenever someone comments `/lgtm review` in a pull request.
 
 ```yaml
 name: LGTM Review
@@ -53,7 +55,7 @@ jobs:
           ref: refs/pull/${{ github.event.issue.number }}/merge
 
       - name: Run LGTM Review
-        uses: ./
+        uses: elementsinteractive/lgtm-ai-action@v1
         with:
           ai-api-key: ${{ secrets.AI_API_TOKEN }}
           git-api-key: ${{ secrets.GITHUB_TOKEN }}
