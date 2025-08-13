@@ -4,7 +4,6 @@ GitHub Action to run [lgtm-ai](https://github.com/elementsinteractive/lgtm-ai).
 
 This action can be used to perform automatic code-reviews or write reviewer guides using LLMs, thanks to lgtm-ai.
 
-
 ## Usage
 
 | Input | Description | Required | Default |
@@ -19,6 +18,7 @@ This action can be used to perform automatic code-reviews or write reviewer guid
 | `config` | Path to lgtm.toml configuration file (e.g. '.lgtm.toml') | ❌ | `""` (none) |
 | `verbose` | Enable extra verbose output (-vv instead of -v) | ❌ | `false` |
 
+### Quick Usage
 
 ```yaml
 - name: AI Code Review
@@ -29,3 +29,38 @@ This action can be used to perform automatic code-reviews or write reviewer guid
     model: 'gpt-5'
     pr-number: ${{ github.event.issue.number }}
 ```
+
+### Full Workflow Example
+
+```yaml
+name: LGTM Review
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  lgtm-review:
+    needs: check-permission
+    if: |
+      github.event.issue.pull_request &&
+      startsWith(github.event.comment.body, '/lgtm review')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR code
+        uses: actions/checkout@v4
+        with:
+          ref: refs/pull/${{ github.event.issue.number }}/merge
+
+      - name: Run LGTM Review
+        uses: ./
+        with:
+          ai-api-key: ${{ secrets.AI_API_TOKEN }}
+          git-api-key: ${{ secrets.GITHUB_TOKEN }}
+          pr-number: ${{ github.event.issue.number }}
+          model: 'gpt-5'
+```
+
+> [!TIP]
+> The action will autodiscover any `lgtm.toml` file in your repository so you can 
+> fully configure `lgtm-ai`. See the [configuration documentation](https://github.com/elementsinteractive/lgtm-ai?tab=readme-ov-file#configuration-file).
