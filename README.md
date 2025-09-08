@@ -65,4 +65,4 @@ jobs:
 
 > [!TIP]
 > The action will autodiscover any `lgtm.toml` file in your repository so you can 
-> fully configure `lgtm-ai`. See the [configuration documentation](https://github.com/elementsinteractive/lgtm-ai?tab=readme-ov-file#configuration-file).
+> fully configure `lgtm-ai`. See the [configuration documentation](https://github.com/elementsinteractive/lgtm-ai?tab=readme-ov-file#configuration).
