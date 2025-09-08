@@ -20,7 +20,7 @@ inputs:
     required: true
 
   model:
-    description: "AI model to use (e.g. gpt-4o, claude-3-5-sonnet-latest, gemini-2.0-flash)"
+    description: "AI model to use (e.g. gpt-5, claude-sonnet-4-0, gemini-2.5-flash)"
     required: false
 
   version:
@@ -34,7 +34,7 @@ inputs:
     default: "true"
 
   exclude:
-    description: "File patterns to exclude (e.g. '*.md *.json package-lock.json')"
+    description: "Space-separated file patterns to exclude (e.g. '*.md *.json package-lock.json')"
     required: false
     default: ""
 
@@ -47,6 +47,11 @@ inputs:
     description: "Enable extra verbose output (-vv instead of -v)"
     required: false
     default: "false"
+
+  output-format:
+    description: "Output format for the review (pretty, json, markdown)"
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -72,11 +77,21 @@ runs:
         fi
 
         if [ -n "${{ inputs.exclude }}" ]; then
-          ARGS+=(--exclude "${{ inputs.exclude }}")
+          # Split exclude patterns and add each as a separate --exclude flag
+          IFS=' ' read -ra EXCLUDE_PATTERNS <<< "${{ inputs.exclude }}"
+          for pattern in "${EXCLUDE_PATTERNS[@]}"; do
+            if [ -n "$pattern" ]; then
+              ARGS+=(--exclude "$pattern")
+            fi
+          done
         fi
 
         if [ -n "${{ inputs.config }}" ]; then
           ARGS+=(--config "${{ inputs.config }}")
+        fi
+
+        if [ -n "${{ inputs.output-format }}" ]; then
+          ARGS+=(--output-format "${{ inputs.output-format }}")
         fi
 
         # Verbose mode (default -v, or -vv if verbose=true)
