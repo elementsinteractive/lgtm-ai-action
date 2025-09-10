@@ -1,5 +1,5 @@
 name: "LGTM AI Code Review"
-description: "AI-powered code review for pull requests"
+description: "AI-powered code reviewer for pull requests"
 author: "Elements Interactive"
 
 branding:
@@ -62,7 +62,6 @@ runs:
         # Build arguments as an array for safety (avoids word-splitting issues)
         ARGS=(
           review
-          --pr-url "https://github.com/${{ github.repository }}/pull/${{ inputs.pr-number }}"
           --git-api-key "${{ inputs.git-api-key }}"
           --ai-api-key "${{ inputs.ai-api-key }}"
         )
@@ -105,4 +104,5 @@ runs:
           -v "${{ github.workspace }}:/workspace" \
           -w /workspace \
           elementsinteractive/lgtm-ai:${{ inputs.version }} \
-          "${ARGS[@]}"
+          "${ARGS[@]}" \
+          "https://github.com/${{ github.repository }}/pull/${{ inputs.pr-number }}"
