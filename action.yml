@@ -3,7 +3,7 @@ description: "AI-powered code reviewer for pull requests"
 author: "Elements Interactive"
 
 branding:
-  icon: "moon"
+  icon: "search"
   color: "blue"
 
 inputs:
@@ -43,15 +43,15 @@ inputs:
     required: false
     default: ""
 
-  verbose:
-    description: "Enable extra verbose output (-vv instead of -v)"
-    required: false
-    default: "false"
-
   output-format:
     description: "Output format for the review (pretty, json, markdown)"
     required: false
     default: ""
+
+  verbose:
+    description: "Enable extra verbose output (-vv instead of -v)"
+    required: false
+    default: "false"
 
 runs:
   using: "composite"

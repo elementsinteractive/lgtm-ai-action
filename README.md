@@ -16,6 +16,7 @@ This action can be used to perform automatic code-reviews or write reviewer guid
 | `publish` | Whether to publish the review as PR comments | ❌ | `true` |
 | `exclude` | File patterns to exclude (e.g. '*.md *.json package-lock.json') | ❌ | `""` (none) |
 | `config` | Path to lgtm.toml configuration file (e.g. '.lgtm.toml') | ❌ | `""` (none) |
+| `output-format` | Output format for the review (pretty, json, markdown) | ❌ | `""` (default) |
 | `verbose` | Enable extra verbose output (-vv instead of -v) | ❌ | `false` |
 
 ### Quick Usage
@@ -43,7 +44,6 @@ on:
 
 jobs:
   lgtm-review:
-    needs: check-permission
     if: |
       github.event.issue.pull_request &&
       startsWith(github.event.comment.body, '/lgtm review')
@@ -57,7 +57,7 @@ jobs:
       - name: Run LGTM Review
         uses: elementsinteractive/lgtm-ai-action@v1
         with:
-          ai-api-key: ${{ secrets.AI_API_TOKEN }}
+          ai-api-key: ${{ secrets.AI_API_KEY }}
           git-api-key: ${{ secrets.GITHUB_TOKEN }}
           pr-number: ${{ github.event.issue.number }}
           model: 'gpt-5'
@@ -65,4 +65,4 @@ jobs:
 
 > [!TIP]
 > The action will autodiscover any `lgtm.toml` file in your repository so you can 
-> fully configure `lgtm-ai`. See the [configuration documentation](https://github.com/elementsinteractive/lgtm-ai?tab=readme-ov-file#configuration).
+> fully configure `lgtm-ai`. For that, you will need to use the `actions/checkout` action in your workflow. See the [configuration documentation](https://github.com/elementsinteractive/lgtm-ai?tab=readme-ov-file#configuration) for more information about how to configure `lgtm-ai`.
