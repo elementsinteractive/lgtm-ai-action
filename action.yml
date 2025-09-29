@@ -53,6 +53,21 @@ inputs:
     required: false
     default: "false"
 
+  issues_platform:
+    description: "Issues platform to use (github, gitlab, jira)"
+    required: false
+    default: ""
+
+  issues_url:
+    description: "Base URL for the issues location."
+    required: false
+    default: ""
+
+  issues_api_key:
+    description: "API key for the issues platform. If issues options are set, but this is not provided, the git-api-key will be used instead."
+    required: false
+    default: ""
+
 runs:
   using: "composite"
   steps:
@@ -98,6 +113,19 @@ runs:
           ARGS+=(-vv)
         else
           ARGS+=(-v)
+        fi
+
+        # Issues integration
+        if [ -n "${{ inputs.issues_platform }}" ]; then
+          ARGS+=(--issues-platform "${{ inputs.issues_platform }}")
+        fi
+
+        if [ -n "${{ inputs.issues_url }}" ]; then
+          ARGS+=(--issues-url "${{ inputs.issues_url }}")
+        fi
+
+        if [ -n "${{ inputs.issues_api_key }}" ]; then
+          ARGS+=(--issues-api-key "${{ inputs.issues_api_key }}")
         fi
 
         docker run --rm \

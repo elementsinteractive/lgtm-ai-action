@@ -16,7 +16,10 @@ This action can be used to perform automatic code-reviews or write reviewer guid
 | `publish` | Whether to publish the review as PR comments | ❌ | `true` |
 | `exclude` | File patterns to exclude (e.g. '*.md *.json package-lock.json') | ❌ | `""` (none) |
 | `config` | Path to lgtm.toml configuration file (e.g. '.lgtm.toml') | ❌ | `""` (none) |
-| `output-format` | Output format for the review (pretty, json, markdown) | ❌ | `""` (default) |
+| `output-format` | Output format for the review (pretty, json, markdown) | ❌ | `pretty` |
+| `issues-platform` | Platform of the issues/user stories (github, gitlab, jira) | ❌ | `""` (none) |
+| `issues-url` | Base URL of the issues/user stories | ❌ | `""` (none) |
+| `issues-api-key` | API Key to connect to the issues platform. Can be ommited even if issues integration is set, then `git-api-key` will be used | ❌ | `""` (none) |
 | `verbose` | Enable extra verbose output (-vv instead of -v) | ❌ | `false` |
 
 ### Quick Usage
